@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gleam.io Autosolve
 // @namespace    GLEAM
-// @version      0.9
+// @version      1.0
 // @description  lets save some time
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
@@ -25,6 +25,7 @@ var gleam = setInterval(function(){
             }else{
                 console.log('[GLEAM] already completed');
                 $('div.incentive-description h3.ng-binding.ng-scope').append('<div style="background:gold;color:#000;border-radius:10px;">Already completed!</div>');
+                clearInterval(gleam);
             }
         }   
         gi++;
