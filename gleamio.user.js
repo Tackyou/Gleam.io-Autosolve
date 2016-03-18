@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gleam.io Autosolve
 // @namespace    GLEAM
-// @version      1.2
+// @version      1.3
 // @description  lets save some time
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
@@ -17,12 +17,13 @@ console.log('[GLEAM] Welcome!');
 if ($("#current-entries") !== null) {
     $('.span4.blue-square.ng-scope').after('<div class="span4 green-square ng-scope"><span class="square-describe mont"><span class="status small"><span class="current ng-binding" id="winning-chance">NaN</span></span><span class="description ng-binding">Winning Chance</span></span></div>');
     $("div.square-row.row-fluid.center.ng-scope > .span4").width('25%');
-    setTimeout(function(){ 
-        var own = parseInt($(".status.ng-binding").text());
-        var total = parseInt($(".current.ng-binding").text());
-        var chance = Math.round(10000 * own / total) / 100;
-        $("#winning-chance").text(chance+"%");
-    }, 250);
+    setTimeout(setChance, 250);
+}
+function setChance(){
+    var own = parseInt($(".status.ng-binding").text());
+    var total = parseInt($(".current.ng-binding").text());
+    var chance = Math.round(10000 * own / total) / 100;
+    $("#winning-chance").text(chance+"%");
 }
 var gi = 0;
 var gleam = setInterval(function(){
@@ -32,6 +33,7 @@ var gleam = setInterval(function(){
                 $("[ng-click*='entry_method']").trigger('click');
                 $("[ng-class*='tallyIcon']").trigger('click');
                 console.log('[GLEAM] Action performed');
+                setChance();
             }else{
                 console.log('[GLEAM] already completed');
                 $('div.incentive-description h3.ng-binding.ng-scope').append('<div style="background:gold;color:#000;border-radius:10px;">Already completed!</div>');
@@ -41,5 +43,6 @@ var gleam = setInterval(function(){
         gi++;
         if(gi>6){
             clearInterval(gleam);
+            setChance();
         }
 }, 500);
