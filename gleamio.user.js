@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gleam.io Autosolve
 // @namespace    GLEAM
-// @version      1.4
+// @version      1.5
 // @description  lets save some time
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
@@ -35,18 +35,31 @@ function gleam(){
         var y = 0, x = setInterval(function(){
             y++;
             var g = 0;
-            $('.entry-method').each(function(index){
+            $('.entry-method').each(function(n){
                 g++;
                 var elem = $(this);
-                if(!elem.hasClass('completed-entry-method') && processed.indexOf(g)==-1){
+                if(!elem.hasClass('completed-entry-method') && elem.is(':visible') && processed.indexOf(g)==-1){
                     var type = $('span.icon-wrapper i', elem);
                     var text = '#'+g+' '+$.trim($('.text .ng-binding.ng-scope', elem).text());
                     console.log("[GLEAM] Processing: "+text);
                     if(type.hasClass('fa-heart')){
                         checkStatus(elem);
                     }else{
-                        $('.entry_details a.btn', elem).trigger('click');
-                        $('.tally', elem).trigger('click');
+                        action(elem);
+                        if(type.hasClass('fa-youtube')){
+                            var yt = $('iframe.youtube', elem);
+                            var yl = yt.attr('src').replace('autoplay=0', 'autoplay=1');
+                            if(yl.length>0){
+                                yt.attr('src', yl+'&start=99999999999');
+                                var k = setInterval(function(){
+                                    $('.btn[ng-click]', elem).trigger('click');
+                                    if(type.hasClass('fa-check') || type.hasClass('fa-clock-o')){
+                                        clearInterval(k);
+                                    }
+                                }, 100);
+                                return true;
+                            }
+                        }
                         setTimeout(function(){setChance();checkStatus(elem);},400);
                     }
                     processed.push(g);
@@ -59,6 +72,10 @@ function gleam(){
             }
         }, 1000);
     }
+}
+function action(elem){
+    $('.btn', elem).trigger('click');
+    $('.tally', elem).trigger('click');
 }
 function checkStatus(elem){
     var i = 0;
