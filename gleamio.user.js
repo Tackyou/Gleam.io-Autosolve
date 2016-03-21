@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gleam.io Autosolve
 // @namespace    GLEAM
-// @version      1.5
+// @version      1.6
 // @description  lets save some time
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
@@ -14,14 +14,15 @@
 // ==/UserScript==
 
 var wo = window.open;
-window.open = function(){
+function non(){
    return;
 }
 var processed = [];
+var ytreplace = [];
 console.log('[GLEAM] Welcome!');
 $(function(){
     gleam();
-    if ($("#current-entries") !== null) {
+    if ($("#current-entries") != undefined) {
         $('.span4.blue-square.ng-scope').after('<div class="span4 green-square ng-scope"><span class="square-describe mont"><span class="status small"><span class="current ng-binding" id="winning-chance">NaN</span></span><span class="description ng-binding">Winning Chance</span></span></div>');
         $("div.square-row.row-fluid.center.ng-scope > .span4").width('25%');
         setTimeout(setChance, 400);
@@ -36,62 +37,56 @@ function gleam(){
             y++;
             var g = 0;
             $('.entry-method').each(function(n){
+                // check if tooltip says "have to solve other steps first" to prevent trying hidden tasks
                 g++;
                 var elem = $(this);
                 if(!elem.hasClass('completed-entry-method') && elem.is(':visible') && processed.indexOf(g)==-1){
+                    window.open = non;
                     var type = $('span.icon-wrapper i', elem);
                     var text = '#'+g+' '+$.trim($('.text .ng-binding.ng-scope', elem).text());
                     console.log("[GLEAM] Processing: "+text);
                     if(type.hasClass('fa-heart')){
-                        checkStatus(elem);
+                        checkStatus(elem, g);
                     }else{
-                        action(elem);
                         if(type.hasClass('fa-youtube')){
                             var yt = $('iframe.youtube', elem);
-                            var yl = yt.attr('src').replace('autoplay=0', 'autoplay=1');
-                            if(yl.length>0){
-                                yt.attr('src', yl+'&start=99999999999');
-                                var k = setInterval(function(){
-                                    $('.btn[ng-click]', elem).trigger('click');
-                                    if(type.hasClass('fa-check') || type.hasClass('fa-clock-o')){
-                                        clearInterval(k);
-                                    }
-                                }, 100);
+                            if(yt.attr('src') != undefined){
+                                if(ytreplace.indexOf(g)==-1){
+                                    var yl = yt.attr('src').replace('autoplay=0', 'autoplay=1');
+                                    yt.attr('src', yl+'&start=99999999999');
+                                    ytreplace.push(g);
+                                }
+                                var b = $('button.btn[ng-click]', elem);
+                                if(b.is(':visible')){
+                                    b.trigger('click');
+                                    checkStatus(elem, g);
+                                }
                                 return true;
                             }
                         }
-                        setTimeout(function(){setChance();checkStatus(elem);},400);
+                        $('.btn', elem).trigger('click');
+                        $('.tally', elem).trigger('click');
+                        checkStatus(elem, g);
                     }
-                    processed.push(g);
+                    window.open = wo;
                 }
             });
-            if(y == 20){
-                clearInterval(x);
-                setTimeout(function(){setChance();},1500);
-                window.open = wo;
-            }
+            setChance();
         }, 1000);
     }
 }
-function action(elem){
-    $('.btn', elem).trigger('click');
-    $('.tally', elem).trigger('click');
-}
-function checkStatus(elem){
-    var i = 0;
-    var v = setInterval(function(){
-        i++;
-        var tally = $("[ng-class*='tallyIcon']", elem);
-        if(!tally.hasClass('fa-spin') || i == 100){
-            if(tally.hasClass('fa-chevron-down')){
-                $('.tally', elem).trigger('click');
-            }
-            if(!tally.hasClass('fa-check') && !tally.hasClass('fa-clock-o')){
-                $('.tally', elem).css('background', '#F2C32E');
-            }
-            clearInterval(v);
+function checkStatus(elem, g){
+    var tally = $('[ng-class*="tallyIcon"]', elem);
+    if(!tally.hasClass('fa-spin')){
+        if(tally.hasClass('fa-chevron-down')){
+            $('.tally', elem).trigger('click');
         }
-    }, 100);
+        if(!tally.hasClass('fa-check') && !tally.hasClass('fa-clock-o')){
+            $('.tally', elem).css('background', '#F2C32E');
+        }
+        processed.push(g);
+    }
+    setChance();
 }
 function setChance(){
     var own = parseInt($(".status.ng-binding").text());
