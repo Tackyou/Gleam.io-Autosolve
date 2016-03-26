@@ -40,6 +40,7 @@ function gleam(){
                 // check if tooltip says "have to solve other steps first" to prevent trying hidden tasks
                 g++;
                 var elem = $(this);
+                elem.data('$scope').entry_method.mandatory = true;
                 if(!elem.hasClass('completed-entry-method') && elem.is(':visible') && processed.indexOf(g)==-1){
                     window.open = non;
                     var type = $('span.icon-wrapper i', elem);
