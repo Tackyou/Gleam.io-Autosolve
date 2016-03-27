@@ -6,7 +6,10 @@
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
 // @icon         http://i.imgur.com/6PuVE2l.png
-// @match        *gleam.io/*
+// @match        https://*.gleam.io/*
+// @match        http://*.gleam.io/*
+// @match        https://gleam.io/*
+// @match        http://gleam.io/*
 // @supportURL   https://github.com/Tackyou/Gleam.io-Autosolve/issues
 // @updateURL    https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/gleamio.user.js
 // @downloadURL  https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/gleamio.user.js
