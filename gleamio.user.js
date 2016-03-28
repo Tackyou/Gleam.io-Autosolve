@@ -6,7 +6,7 @@
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
 // @icon         http://i.imgur.com/6PuVE2l.png
-// @match        *gleam.io/*
+// @match        https://gleam.io/*
 // @supportURL   https://github.com/Tackyou/Gleam.io-Autosolve/issues
 // @updateURL    https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/gleamio.user.js
 // @downloadURL  https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/gleamio.user.js
@@ -20,7 +20,7 @@ function non(){
 var processed = [];
 var ytreplace = [];
 console.log('[GLEAM] Welcome!');
-$(function(){
+$(window).load(function(){
     gleam();
     if ($("#current-entries") != undefined) {
         $('.span4.blue-square.ng-scope').after('<div class="span4 green-square ng-scope"><span class="square-describe mont"><span class="status small"><span class="current ng-binding" id="winning-chance">NaN</span></span><span class="description ng-binding">Winning Chance</span></span></div>');
