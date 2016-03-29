@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gleam.io Autosolve
 // @namespace    GLEAM
-// @version      1.7
+// @version      1.7.1
 // @description  lets save some time
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
@@ -52,7 +52,7 @@ function solveStep(m){
         console.log("[GLEAM] Processing: "+text);
         if(!type.hasClass('fa-heart')){
             if(type.hasClass('fa-youtube')){
-                var ytskip = false;
+                var ys = true;
                 var yt = $('iframe.youtube', elem);
                 if(ytstatus == 0){
                     $('.tally', elem).trigger('click');
@@ -64,23 +64,21 @@ function solveStep(m){
                             yt.attr('src', yl+'&start=99999999999');
                             ytstatus = 2;
                         }else{
-                            ytskip = true;
+                            ys = false;
                             ytstatus = 0;
-                            m++;
                         }
                     }else{
                         if(ytstatus == 2){
                             var b = $('button.btn[ng-click]', elem);
                             if(b.is(':visible')){
                                 b.trigger('click');
-                                m++;
                                 ytstatus = 0;
+                                m++;
                             }
                         }
                     }
                 }
-                setTimeout(function(){solveStep(m);}, 100);
-                if(!ytskip){ return; }
+                if(ys){ setTimeout(function(){solveStep(m);}, 100); return; }
             }
             $('.btn', elem).trigger('click');
             $('.tally', elem).trigger('click');
