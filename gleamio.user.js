@@ -13,7 +13,6 @@
 // @grant        none
 // ==/UserScript==
 
-var ytstatus = 0;
 var elements = 0;
 var gleam = null;
 console.log('[GLEAM] Welcome!');
