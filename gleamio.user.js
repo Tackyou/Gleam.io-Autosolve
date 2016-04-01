@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gleam.io Autosolve
 // @namespace    GLEAM
-// @version      1.8
+// @version      1.8.1
 // @description  lets save some time
 // @author       Tackyou
 // @license      https://raw.githubusercontent.com/Tackyou/Gleam.io-Autosolve/master/LICENSE
@@ -23,7 +23,7 @@ $(window).load(function(){
     });
     elements = elements.length;
     gg();
-    if ($("#current-entries") != undefined) {
+    if ($("#current-entries") !== undefined) {
         $('.span4.blue-square.ng-scope').after('<div class="span4 green-square ng-scope"><span class="square-describe mont"><span class="status small"><span class="current ng-binding" id="winning-chance">NaN</span></span><span class="description ng-binding">Winning Chance</span></span></div>');
         $("div.square-row.row-fluid.center.ng-scope > .span4").width('25%');
         setTimeout(setChance, 400);
@@ -45,7 +45,7 @@ function solveStep(m){
     }
     var elem = $('.entry-method:eq('+m+')');
     var scop = elem.data('$scope');
-    if(scop != null) {
+    if(scop !== null) {
         var sype = scop.entry_method.entry_type;
         if(sype != 'share_action' && gleam.canEnter(scop.entry_method) && !gleam.isEntered(scop.entry_method)){
             var type = $('span.icon-wrapper i', elem);
@@ -77,11 +77,16 @@ function solveStep(m){
         }, 1500);
     }
     m++;
-    solveStep(m);
+    setTimeout(function(){
+        solveStep(m);
+    }, getRandomInt(1120,2220));
 }
 function setChance(){
     var own = parseInt($(".status.ng-binding").text());
     var total = parseInt($(".current.ng-binding").text());
     var chance = Math.round(10000 * own / total) / 100;
     $("#winning-chance").text(chance+"%");
+}
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
