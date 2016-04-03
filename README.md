@@ -1,5 +1,8 @@
 # Gleam.io-Autosolve
 
+Warning: Using automation scripts is against the TOS of gleam.io and will most likely get your account banned. Use with caution.
+------------------------------------------------------------------------
+
 Solves almost all tasks on gleam.io
 
 **How to use this script ?**
