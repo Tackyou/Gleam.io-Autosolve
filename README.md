@@ -3,7 +3,7 @@
 This script is no longer updated.
 For a more updated version check out https://github.com/Citrinate/gleamSolver
 
-Warning: Using automation scripts is against the TOS of gleam.io and will most likely get your account banned. Use with caution.
+Warning: Using automation scripts is against the TOS of gleam.io and will definitely get your account banned. Use with caution.
 ------------------------------------------------------------------------
 
 Solves almost all tasks on gleam.io
